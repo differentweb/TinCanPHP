@@ -137,7 +137,7 @@ class RemoteLRS implements LRSInterface
         // normal handling
         //
         set_error_handler(
-            function ($errno, $errstr, $errfile, $errline, array $errcontext) {
+            function ($errno, $errstr, $errfile, $errline) {
                 // "!== false" is intentional. strpos() can return 0, which is falsey, but returning
                 // 0 matches our "true" condition. Using strict equality to avoid that confusion.
                 if ($errno == E_NOTICE && strpos($errstr, 'Array to string conversion') !== false) {
@@ -162,10 +162,15 @@ class RemoteLRS implements LRSInterface
             $fp = fopen($url, 'rb', false, $context);
 
             if (! $fp) {
-                $content = "Request failed: $php_errormsg";
+                $content = "Request failed";
+
+                $last_error = error_get_last();
+
+                if($last_error && $last_error['type'] === E_ERROR) {
+                    $content .= ": " . $last_error['message'];
+                }
             }
-        }
-        catch (\ErrorException $ex) {
+        } catch (\ErrorException $ex) {
             $content = "Request failed: $ex";
         }
 
