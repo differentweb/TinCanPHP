@@ -1,8 +1,7 @@
 {
-    "name": "rusticisoftware/tincan",
+    "name": "differentweb/tincan",
     "type": "library",
     "description": "Experience API (Tin Can API) Library",
-    "homepage": "http://rusticisoftware.github.io/TinCanPHP/",
     "keywords": [
         "tin can",
         "tincan",
